@@ -1,30 +1,16 @@
 import React, { useState } from "react";
-import detectEthereumProvider from "@metamask/detect-provider";
+import MetamaskLogin from "./MetamaskLogin";
 
 function App() {
   const [address, setAddress] = useState("");
 
-  const handleLogin = async () => {
-    const provider = await detectEthereumProvider();
-
-    if (provider) {
-      try {
-        const accounts = await provider.request({
-          method: "eth_requestAccounts",
-        });
-
-        setAddress(accounts[0]);
-      } catch (error) {
-        console.error("Error connecting to Metamask:", error);
-      }
-    } else {
-      alert("Metamask is not installed. Please install Metamask and try again.");
-    }
+  const handleLogin = (walletAddress) => {
+    setAddress(walletAddress);
   };
 
   return (
     <div>
-      <button onClick={handleLogin}>Login with Metamask</button>
+      <MetamaskLogin onLogin={handleLogin} />
       {address && <h1>Hello, {address}</h1>}
     </div>
   );
